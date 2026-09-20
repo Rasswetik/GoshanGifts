@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Rasswet Gifts — Игры</title>
+<link rel="icon" href="/static/img/logo.png" type="image/png">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="/static/js/telegram-auth.js"></script>
+
+<style>
+:root{
+    --bg:#080d1b;
+    --header:#0c1221;
+    --text:#f7f9fd;
+    --muted:#91a1bb;
+    --cyan:#20b8ff;
+    --red:#ff315d;
+    --blue:#6e91bd;
+    --line:rgba(102,143,190,.20);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+html,body{min-height:100%;min-height:100dvh;width:100%}
+
+body{
+    min-height:100dvh;
+    overscroll-behavior:none;
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(700px 450px at 8% 55%,rgba(24,91,145,.13),transparent 72%),
+        radial-gradient(700px 450px at 94% 55%,rgba(95,58,53,.10),transparent 72%),
+        linear-gradient(180deg,#090e1c 0%,#080d1b 100%);
+    overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:76px 0 0;
+    pointer-events:none;
+    opacity:.30;
+    background-image:
+        linear-gradient(rgba(110,145,189,.07) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(110,145,189,.07) 1px,transparent 1px);
+    background-size:80px 80px;
+}
+
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+img{display:block}
+
+/* HEADER */
+.top-bar{
+    height:76px;
+    width:100%;
+    padding:0 42px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    z-index:10;
+    background:rgba(10,15,29,.96);
+    border-bottom:1px solid rgba(110,145,189,.12);
+    box-shadow:0 1px 25px rgba(0,0,0,.16);
+}
+
+.desktop-left{
+    display:flex;
+    align-items:center;
+}
+
+.main-nav{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.logo-btn{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.logo-btn img{
+    width:38px;
+    height:38px;
+    object-fit:contain;
+}
+
+.main-nav{
+    display:flex;
+    align-items:center;
+    gap:2px;
+}
+
+.nav-btn{
+    height:40px;
+    padding:0 13px;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#8e9db6;
+    font-size:14px;
+    font-weight:700;
+    transition:.18s ease;
+    white-space:nowrap;
+}
+
+.nav-btn:hover{
+    color:#c4d1e2;
+    background:rgba(106,143,185,.07);
+}
+
+.nav-btn.active{
+    color:#20b8ff;
+    background:rgba(28,128,189,.17);
+    box-shadow:
+        inset 0 0 0 1px rgba(32,184,255,.28),
+        0 4px 18px rgba(16,125,185,.08);
+}
+
+.nav-icon{
+    width:18px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:currentColor;
+}
+
+.nav-icon svg{width:18px;height:18px}
+
+.account{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.balance{
+    height:36px;
+    min-width:88px;
+    padding:0 10px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    color:#edf5ff;
+    background:linear-gradient(180deg,#14253a,#101d30);
+    border:1px solid rgba(38,153,218,.34);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+    font-size:14px;
+    font-weight:800;
+}
+
+.balance img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+}
+
+.balance-value{min-width:35px;text-align:right}
+
+.plus-btn{
+    width:28px;
+    height:28px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#eaf7ff;
+    font-size:0;
+    line-height:1;
+    background:linear-gradient(180deg,rgba(32,184,255,.24),rgba(16,90,140,.22));
+    border:1px solid rgba(32,184,255,.45);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.07),
+        0 4px 16px rgba(16,125,185,.16);
+    transition:.18s ease;
+}
+
+.plus-btn svg{width:13px;height:13px}
+
+.plus-btn:hover{
+    background:linear-gradient(180deg,rgba(32,184,255,.36),rgba(16,90,140,.3));
+    border-color:rgba(32,184,255,.68);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.09),
+        0 6px 20px rgba(16,125,185,.24);
+}
+
+.plus-btn:active{transform:scale(.92)}
+
+.avatar{
+    width:43px;
+    height:43px;
+    padding:2px;
+    border-radius:50%;
+    overflow:hidden;
+    background:#101a2b;
+    border:2px solid #257fca;
+    box-shadow:0 0 0 2px rgba(37,127,202,.12);
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* PAGE */
+.page{
+    width:min(100%,980px);
+    margin:0 auto;
+    padding:48px 28px 80px;
+    position:relative;
+    z-index:1;
+}
+
+.page-title{
+    font-size:32px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.8px;
+    margin-bottom:27px;
+}
+
+/* GAMES */
+.games-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+    width:100%;
+    align-items:stretch;
+}
+
+.game-card{
+    min-width:0;
+    height:220px;
+    position:relative;
+    overflow:hidden;
+    border-radius:22px;
+    background:#101727;
+    text-align:left;
+    isolation:isolate;
+    border:1px solid rgba(150,170,200,.18);
+    transition:transform .22s ease,box-shadow .22s ease,filter .22s ease,opacity .22s ease;
+}
+
+.game-card:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-3;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    transform:scale(1.001);
+    transition:transform .45s ease;
+}
+
+.game-card:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-2;
+    background:
+        linear-gradient(180deg,rgba(4,7,14,.02) 18%,rgba(4,7,14,.15) 48%,rgba(4,7,14,.91) 100%),
+        linear-gradient(90deg,rgba(4,7,14,.38),transparent 72%);
+}
+
+.game-card.crash{
+    border-color:rgba(255,49,93,.82);
+    box-shadow:0 0 0 1px rgba(255,49,93,.10),0 12px 35px rgba(255,49,93,.10);
+}
+
+.game-card.mines{
+    border-color:rgba(130,145,165,.42);
+    box-shadow:0 0 0 1px rgba(130,145,165,.07),0 12px 35px rgba(0,0,0,.14);
+}
+
+.game-card.crash:before{background-image:url("/static/img/crash.png")}
+.game-card.crash.witch-mode:before{background-image:url("/static/img/witch_crash.png")}
+.game-card.crash.witch-mode{border-color:rgba(208,141,255,.48);box-shadow:0 16px 50px rgba(83,30,113,.18),inset 0 0 0 1px rgba(255,255,255,.04)}
+.game-card.crash.witch-mode:after{background:linear-gradient(90deg,rgba(18,5,27,.78),rgba(22,7,32,.30) 55%,rgba(22,7,32,.08) 100%)}
+.game-card.mines:before{background-image:url("/static/img/mines.png")}
+
+.game-card:not(.is-disabled):hover{transform:translateY(-3px)}
+.game-card:not(.is-disabled):hover:before{transform:scale(1.035)}
+.game-card:not(.is-disabled):active{transform:scale(.987)}
+
+/* Mines пока недоступны */
+.game-card.is-disabled{
+    cursor:not-allowed;
+    filter:grayscale(1) saturate(.35);
+    opacity:.62;
+    box-shadow:none!important;
+}
+.game-card.is-disabled:after{
+    background:linear-gradient(180deg,rgba(30,36,46,.50),rgba(18,22,29,.91));
+}
+.game-card.is-disabled .game-subtitle{color:#a8b0bc}
+.game-card.is-disabled .disabled-label{
+    display:inline-flex;
+    margin-top:9px;
+    padding:6px 9px;
+    border-radius:8px;
+    color:#b8c0ca;
+    background:rgba(145,155,170,.12);
+    border:1px solid rgba(180,190,205,.15);
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.game-card-content{
+    position:absolute;
+    left:24px;
+    right:20px;
+    bottom:20px;
+    z-index:4;
+}
+
+.game-name{
+    color:#fff;
+    font-size:32px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.7px;
+    text-shadow:0 2px 13px rgba(0,0,0,.75);
+}
+
+.game-subtitle{
+    display:block;
+    margin-top:8px;
+    color:#fff;
+    font-size:12px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.35px;
+    text-transform:uppercase;
+    text-shadow:0 1px 7px rgba(0,0,0,.8);
+}
+
+/* WITCH HAT PARTY */
+.event-card{
+    grid-column:1/-1;
+    height:190px;
+    display:block;
+    border:1px solid rgba(208,141,255,.70);
+    background:#16091f;
+    box-shadow:0 16px 50px rgba(83,30,113,.24),inset 0 0 0 1px rgba(255,255,255,.04);
+    cursor:pointer;
+}
+
+.event-card.is-hidden{display:none!important}
+
+.event-card:before{
+    background-image:url("/static/img/banner_witchparty.webp");
+    background-size:cover;
+    background-position:center;
+    filter:saturate(1.05) contrast(1.04);
+}
+
+.event-card:after{
+    z-index:-1;
+    background:linear-gradient(90deg,rgba(18,5,27,.91) 0%,rgba(22,7,32,.68) 38%,rgba(22,7,32,.12) 78%,rgba(22,7,32,.22) 100%);
+}
+
+.event-content{
+    position:absolute;
+    inset:0;
+    z-index:5;
+    display:flex;
+    align-items:flex-end;
+    padding:22px 25px;
+    pointer-events:none;
+}
+
+.event-copy{position:relative;z-index:8}
+.event-title{
+    color:#fff;
+    font-size:31px;
+    line-height:.92;
+    font-weight:950;
+    letter-spacing:-.8px;
+    text-shadow:0 3px 18px rgba(0,0,0,.75);
+}
+.event-remaining{
+    display:inline-flex;
+    margin-top:11px;
+    padding:7px 10px;
+    border-radius:9px;
+    color:#f2ddff;
+    background:rgba(103,44,139,.42);
+    border:1px solid rgba(228,185,255,.24);
+    font-size:12px;
+    font-weight:900;
+    text-shadow:0 1px 7px rgba(0,0,0,.45);
+}
+
+/* Анимированные SVG-слои */
+.event-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:3;
+    pointer-events:none;
+    overflow:visible;
+}
+ .event-svg .spark{
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:starShimmer 2.8s ease-in-out infinite;
+    will-change:transform,opacity,filter;
+}
+.event-svg .spark:nth-of-type(2){animation-delay:-.85s;animation-duration:3.35s}
+.event-svg .spark:nth-of-type(3){animation-delay:-1.65s;animation-duration:2.45s}
+.event-svg .spark:nth-of-type(4){animation-delay:-.35s;animation-duration:3.8s}
+
+@keyframes starShimmer{
+    0%,100%{opacity:.28;transform:scale(.72) rotate(0deg);filter:drop-shadow(0 0 2px rgba(235,196,255,.2))}
+    22%{opacity:.62;transform:scale(.9) rotate(8deg);filter:drop-shadow(0 0 5px rgba(235,196,255,.42))}
+    50%{opacity:1;transform:scale(1.16) rotate(20deg);filter:drop-shadow(0 0 12px rgba(244,211,255,.9))}
+    72%{opacity:.72;transform:scale(.96) rotate(30deg);filter:drop-shadow(0 0 7px rgba(235,196,255,.55))}
+}
+
+    50%{transform:translate3d(0,-10px,0) rotate(5deg)}
+}
+@keyframes sparkBlink{
+    0%,100%{opacity:.2;transform:scale(.7)}
+    50%{opacity:1;transform:scale(1)}
+}
+
+.event-hamsters{
+    position:absolute;
+    right:4%;
+    bottom:0;
+    width:270px;
+    height:100%;
+    z-index:6;
+    pointer-events:none;
+}
+
+.event-hamster{
+    position:absolute;
+    width:clamp(86px,10vw,126px);
+    height:auto;
+    object-fit:contain;
+    filter:drop-shadow(0 10px 15px rgba(0,0,0,.42));
+    transform-origin:bottom center;
+}
+
+.event-hamster-1{
+    right:112px;
+    bottom:8px;
+    z-index:2;
+    animation:hamsterFloatOne 3.8s ease-in-out infinite;
+}
+
+.event-hamster-2{
+    right:8px;
+    bottom:4px;
+    z-index:3;
+    animation:hamsterFloatTwo 4.4s ease-in-out infinite;
+    animation-delay:-1.2s;
+}
+
+@keyframes hamsterFloatOne{
+    0%,100%{transform:translate3d(0,5px,0) rotate(-2deg)}
+    50%{transform:translate3d(-5px,-9px,0) rotate(2deg)}
+}
+
+@keyframes hamsterFloatTwo{
+    0%,100%{transform:translate3d(0,3px,0) rotate(2deg) scale(.98)}
+    50%{transform:translate3d(5px,-11px,0) rotate(-2deg) scale(1)}
+}
+
+.event-card:hover .event-hamster-1{animation-duration:2.8s}
+.event-card:hover .event-hamster-2{animation-duration:3.2s}
+
+/* HALLOWEEN ACTIVE */
+.halloween-active body{
+    background:
+        radial-gradient(700px 500px at 8% 40%,rgba(113,45,145,.24),transparent 70%),
+        radial-gradient(700px 500px at 94% 65%,rgba(168,85,247,.17),transparent 70%),
+        linear-gradient(180deg,#12051c 0%,#08040d 100%);
+}
+.halloween-active body:before{
+    background-image:
+        linear-gradient(rgba(168,85,247,.07) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(168,85,247,.07) 1px,transparent 1px);
+}
+.halloween-active .top-bar{
+    background:rgba(18,7,28,.96);
+    border-bottom-color:rgba(168,85,247,.22);
+}
+.halloween-active .nav-btn.active{
+    color:#dfb7ff;
+    background:rgba(139,92,246,.18);
+    box-shadow:inset 0 0 0 1px rgba(168,85,247,.35),0 4px 18px rgba(139,92,246,.1);
+}
+.halloween-active .page-title{color:#f0dcff}
+.halloween-active .bottom-nav{
+    background:rgba(20,8,30,.96);
+    border-top-color:rgba(168,85,247,.26);
+}
+
+/* MOBILE */
+@media(max-width:700px){
+    body:before{inset:calc(62px + env(safe-area-inset-top)) 0 0;background-size:65px 65px}
+
+    /* На телефоне весь верхний интерфейс опускаем примерно на 4% высоты экрана,
+       чтобы он не упирался в системную строку/элементы Telegram Mini App. */
+    .top-bar{
+        margin-top:4vh;
+        height:auto;
+        min-height:calc(62px + env(safe-area-inset-top));
+        padding:calc(8px + env(safe-area-inset-top)) 11px 8px;
+        background:#0b111e;
+    }
+
+    .desktop-left{display:none}
+
+    .account{
+        width:100%;
+        justify-content:flex-end;
+        gap:7px;
+    }
+
+    .balance{min-width:88px;height:34px;padding:0 9px;border-radius:10px;font-size:12.5px}
+    .balance img{width:15px;height:15px}
+    .plus-btn{width:25px;height:25px;border-radius:8px;font-size:0}
+    .plus-btn svg{width:12px;height:12px}
+    .avatar{width:38px;height:38px}
+
+    .page{
+        width:100%;
+        padding:25px 12px calc(88px + env(safe-area-inset-bottom));
+    }
+
+    .page-title{font-size:28px;margin-bottom:17px}
+
+    .games-grid{
+        grid-template-columns:1fr;
+        gap:12px;
+    }
+
+    .game-card{height:165px;border-radius:17px}
+    .game-card-content{left:17px;bottom:16px}
+    .game-name{font-size:27px}
+    .game-subtitle{font-size:11px;margin-top:7px}
+
+    .event-card{grid-column:1;height:178px}
+    .event-hamsters{right:1%;width:210px}
+    .event-hamster{width:92px}
+    .event-hamster-1{right:88px}
+    .event-hamster-2{right:3px}
+    .event-content{padding:18px 17px}
+    .event-title{font-size:26px}
+    .event-remaining{margin-top:8px;font-size:11px;padding:6px 8px}
+    .event-hamster{right:0;width:48%;bottom:-2px}
+}
+
+/* Нижняя навигация только для телефонов/узких экранов */
+.bottom-nav{
+    display:none;
+}
+
+@media(max-width:700px){
+    .bottom-nav{
+        position:fixed;
+        left:10px;
+        right:10px;
+        bottom:calc(8px + env(safe-area-inset-bottom));
+        z-index:100;
+        height:66px;
+        padding:6px;
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:4px;
+        border-radius:20px;
+        background:rgba(12,18,32,.96);
+        border:1px solid rgba(111,151,198,.18);
+        box-shadow:0 14px 45px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.04);
+        backdrop-filter:blur(16px);
+        -webkit-backdrop-filter:blur(16px);
+    }
+    .bottom-nav-btn{
+        min-width:0;
+        border-radius:15px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:4px;
+        color:#7f8da6;
+        font-size:10px;
+        font-weight:850;
+        transition:.18s ease;
+    }
+    .bottom-nav-btn .nav-icon{width:21px;height:21px}
+    .bottom-nav-btn .nav-icon svg{width:21px;height:21px}
+    .bottom-nav-btn.active{
+        color:#20b8ff;
+        background:rgba(28,128,189,.15);
+        box-shadow:inset 0 0 0 1px rgba(32,184,255,.22);
+    }
+    .halloween-active .bottom-nav-btn.active{
+        color:#d8a8ff;
+        background:rgba(139,92,246,.18);
+        box-shadow:inset 0 0 0 1px rgba(168,85,247,.30);
+    }
+}
+
+@media(min-width:701px){
+    .bottom-nav{display:none!important}
+}
+
+@media(max-width:420px){
+    .event-hamster{width:52%}
+    .event-title{font-size:24px}
+}
+
+/* DEPOSIT */
+.deposit-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(3,7,14,.80);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:.2s ease;
+}
+
+.deposit-overlay.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.deposit-modal{
+    width:min(100%,390px);
+    padding:22px;
+    border-radius:20px;
+    background:#111b2c;
+    border:1px solid rgba(111,151,198,.25);
+    box-shadow:0 25px 90px rgba(0,0,0,.55);
+    transform:translateY(10px) scale(.97);
+    transition:.2s ease;
+}
+
+.deposit-overlay.show .deposit-modal{transform:none}
+
+.deposit-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.deposit-title{font-size:20px;font-weight:850}
+
+.deposit-close{
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    color:#95a7c0;
+    background:rgba(143,168,200,.08);
+}
+
+.deposit-methods{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.deposit-method-btn{
+    min-height:115px;
+    border-radius:15px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    background:rgba(100,139,181,.06);
+    border:1px solid rgba(100,139,181,.16);
+    transition:.16s ease;
+}
+
+.deposit-method-btn:hover{
+    background:rgba(100,139,181,.11);
+    border-color:rgba(100,139,181,.35);
+}
+
+.deposit-method-btn img{width:40px;height:40px;object-fit:contain}
+.deposit-method-btn span{font-size:14px;font-weight:800;color:#fff}
+
+/* MOBILE */
+@media(max-width:700px){
+    body:before{inset:calc(62px + env(safe-area-inset-top)) 0 0;background-size:65px 65px}
+
+    .top-bar{
+        height:auto;
+        min-height:calc(62px + env(safe-area-inset-top));
+        padding:calc(8px + env(safe-area-inset-top)) 11px 8px;
+        background:#0b111e;
+    }
+
+    .desktop-left{display:none}
+
+    .account{
+        width:100%;
+        justify-content:flex-end;
+        gap:7px;
+    }
+
+    .balance{
+        min-width:88px;
+        height:34px;
+        padding:0 9px;
+        border-radius:10px;
+        font-size:12.5px;
+    }
+
+    .balance img{width:15px;height:15px}
+
+    .plus-btn{
+        width:25px;
+        height:25px;
+        border-radius:8px;
+        font-size:0;
+    }
+
+    .plus-btn svg{width:12px;height:12px}
+    .avatar{width:38px;height:38px}
+
+    .page{
+        width:100%;
+        padding:28px 12px 40px;
+    }
+
+    .page-title{
+        font-size:28px;
+        margin-bottom:18px;
+    }
+
+    .games-grid{
+        grid-template-columns:1fr;
+        gap:12px;
+    }
+
+    .game-card{
+        height:178px;
+        border-radius:17px;
+    }
+
+    .game-card-content{
+        left:17px;
+        bottom:16px;
+    }
+
+    .game-name{font-size:27px}
+    .game-subtitle{font-size:11px;margin-top:7px}
+}
+
+
+
+@media(max-width:700px){
+    .top-bar{margin-top:4vh;}
+}
+
+/* В основной навигации больше нет отдельного раздела общих кейсов. */
+.nav-btn:first-child .nav-icon svg{width:18px;height:18px;}
+</style>
+</head>
+
+<body>
+
+<header class="top-bar">
+
+    <div class="desktop-left">
+        <button class="logo-btn" onclick="goTo('/games')" aria-label="Игры">
+            <img src="/static/img/logo.png" alt="Rasswet Gifts">
+        </button>
+
+        <nav class="main-nav">
+
+            <!-- ПРОФИЛЬ -->
+            <button class="nav-btn" onclick="goTo('/profile')">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                </span>
+                <span>Профиль</span>
+            </button>
+
+            <!-- АПГРЕЙДЫ -->
+            <button class="nav-btn" onclick="goTo('/upgrade')">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.6c2.65 1.75 4.2 4.55 4.2 8.05 0 1.95-.5 3.55-1.25 4.85l-2.95 1.7-2.95-1.7c-.75-1.3-1.25-2.9-1.25-4.85 0-3.5 1.55-6.3 4.2-8.05Z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path>
+                        <circle cx="12" cy="9.6" r="1.65" stroke="currentColor" stroke-width="1.5"></circle>
+                        <path d="M8.4 14.9 5.9 16.6l.55-3.05M15.6 14.9l2.5 1.7-.55-3.05" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M9.6 18.3l.7 2.5h3.4l.7-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M16.2 16.8h4.1M17.9 15.1l2.4 1.7-2.4 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </span>
+                <span>Апгрейды</span>
+            </button>
+
+            <!-- СЕЗОН -->
+            <button class="nav-btn" onclick="goTo('/leaderboard')">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 4h10v5.5c0 3.2-2.1 5.7-5 6.4-2.9-.7-5-3.2-5-6.4V4Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                        <path d="M7 7H4v2.5A3.5 3.5 0 0 0 7.5 13M17 7h3v2.5a3.5 3.5 0 0 1-3.5 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        <path d="M12 15.9V19M8.5 21h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                </span>
+                <span>Сезон</span>
+            </button>
+
+            <!-- ИГРЫ -->
+            <button class="nav-btn active" onclick="goTo('/games')">
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 8h10a4.5 4.5 0 0 1 4.42 5.36l-.6 3.02A3 3 0 0 1 15.5 17.3l-.85-1.06a2 2 0 0 0-1.56-.74h-2.18a2 2 0 0 0-1.56.74L8.5 17.3a3 3 0 0 1-5.32-.92l-.6-3.02A4.5 4.5 0 0 1 7 8Z" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                        <path d="M7.5 11.5v3M6 13h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        <circle cx="15.5" cy="12" r="1" fill="currentColor"></circle>
+                        <circle cx="17.5" cy="14" r="1" fill="currentColor"></circle>
+                    </svg>
+                </span>
+                <span>Игры</span>
+            </button>
+
+        </nav>
+    </div>
+
+    <div class="account">
+        <div class="balance" aria-label="Баланс">
+            <img src="/static/img/ton.png" alt="TON">
+            <span class="balance-value" id="balVal">0.00</span>
+        </div>
+
+        <button class="plus-btn" onclick="openDeposit()" aria-label="Пополнение">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+        </button>
+
+        <button class="avatar" onclick="goTo('/profile')" aria-label="Профиль">
+            <img id="avatarImg" src="/static/img/logo.png" alt="Профиль">
+        </button>
+    </div>
+
+</header>
+
+<main class="page">
+    <h1 class="page-title">Игры</h1>
+
+    <section class="games-grid" id="gamesGrid">
+        <button class="game-card event-card is-hidden" id="witchHatEvent" onclick="goTo('/event/witch-hat-party')" aria-label="Witch Hat Party">
+            <svg class="event-svg" viewBox="0 0 1000 190" preserveAspectRatio="none" aria-hidden="true">
+                <g class="spark spark-a" fill="#e9c6ff">
+                    <circle cx="770" cy="30" r="3.2"/><circle cx="915" cy="46" r="2.2"/><circle cx="620" cy="57" r="2.8"/>
+                </g>
+                <g class="spark spark-b" fill="#fff4ff">
+                    <path d="M850 126l3.4 8 8 3.4-8 3.4-3.4 8-3.4-8-8-3.4 8-3.4 3.4-8Z"/>
+                    <path d="M720 145l2.4 5.8 5.8 2.4-5.8 2.4-2.4 5.8-2.4-5.8-5.8-2.4 5.8-2.4 2.4-5.8Z"/>
+                </g>
+                <g class="spark spark-c" fill="#dca8ff">
+                    <circle cx="560" cy="32" r="1.8"/><circle cx="675" cy="118" r="2"/><circle cx="955" cy="106" r="1.8"/>
+                </g>
+                <g class="spark spark-d" fill="#ffffff">
+                    <path d="M792 82l2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2 2-4.8Z"/>
+                    <path d="M885 72l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5 1.5-3.5Z"/>
+                </g>
+            </svg>
+            <div class="event-hamsters" aria-hidden="true">
+                <img class="event-hamster event-hamster-1" src="/static/img/hamster1.png" alt="">
+                <img class="event-hamster event-hamster-2" src="/static/img/hamster2.png" alt="">
+            </div>
+            <div class="event-content">
+                <div class="event-copy">
+                    <div class="event-title">Witch Hat<br>Party</div>
+                    <div class="event-remaining" id="witchHatTimer">Осталось — загрузка…</div>
+                </div>
+            </div>
+        </button>
+        <button class="game-card crash" onclick="goTo('/crash')" aria-label="Crash">
+            <div class="game-card-content">
+                <div class="game-name">Crash</div>
+                <span class="game-subtitle">Краш</span>
+            </div>
+        </button>
+
+        <button class="game-card mines is-disabled" type="button" disabled tabindex="-1" aria-disabled="true" aria-label="Mines — недоступно">
+            <div class="game-card-content">
+                <div class="game-name">Mines</div>
+                <span class="game-subtitle">Мины</span>
+                <span class="disabled-label">Скоро</span>
+            </div>
+        </button>
+    </section>
+</main>
+
+<!-- МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ -->
+<nav class="bottom-nav" aria-label="Навигация">
+    <button class="bottom-nav-btn" onclick="goTo('/profile')">
+        <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+        </span>
+        <span>Профиль</span>
+    </button>
+    <button class="bottom-nav-btn" onclick="goTo('/upgrade')">
+        <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 17 10 11l4 4 6-7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 8H20v3.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+        <span>Апгрейды</span>
+    </button>
+    <button class="bottom-nav-btn" onclick="goTo('/leaderboard')">
+        <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 4h10v5.5c0 3.2-2.1 5.7-5 6.4-2.9-.7-5-3.2-5-6.4V4Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 7H4v2.5A3.5 3.5 0 0 0 7.5 13M17 7h3v2.5a3.5 3.5 0 0 1-3.5 3M12 15.9V19M8.5 21h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </span>
+        <span>Сезон</span>
+    </button>
+    <button class="bottom-nav-btn active" onclick="goTo('/games')">
+        <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 8h10a4.5 4.5 0 0 1 4.42 5.36l-.6 3.02A3 3 0 0 1 15.5 17.3l-.85-1.06a2 2 0 0 0-1.56-.74h-2.18a2 2 0 0 0-1.56.74L8.5 17.3a3 3 0 0 1-5.32-.92l-.6-3.02A4.5 4.5 0 0 1 7 8Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7.5 11.5v3M6 13h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="15.5" cy="12" r="1" fill="currentColor"/><circle cx="17.5" cy="14" r="1" fill="currentColor"/>
+            </svg>
+        </span>
+        <span>Игры</span>
+    </button>
+</nav>
+
+<!-- POPUP ПОПОЛНЕНИЯ -->
+<div class="deposit-overlay" id="depositOverlay" onclick="if(event.target===this)closeDeposit()">
+    <div class="deposit-modal">
+
+        <div class="deposit-header">
+            <div class="deposit-title">Пополнение</div>
+            <button class="deposit-close" onclick="closeDeposit()" aria-label="Закрыть">✕</button>
+        </div>
+
+        <div class="deposit-hint">Выберите способ пополнения</div>
+
+        <div class="deposit-methods">
+            <button class="deposit-method-btn" onclick="depositMethod('ton')">
+                <img src="/static/img/ton.png" alt="TON">
+                <span>TON</span>
+            </button>
+
+            <button class="deposit-method-btn" onclick="depositMethod('stars')">
+                <img src="/static/img/star.png" alt="Stars">
+                <span>Stars</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+var userId = null;
+var userData = null;
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function goTo(url){
+    try{
+        if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback){
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
+    }catch(e){}
+
+    window.location.href = url;
+}
+
+function openDeposit(){
+    var overlay = $('depositOverlay');
+    if(!overlay) return;
+
+    overlay.classList.add('show');
+
+    try{
+        if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback){
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
+    }catch(e){}
+}
+
+function closeDeposit(){
+    var overlay = $('depositOverlay');
+    if(!overlay) return;
+    overlay.classList.remove('show');
+}
+
+/*
+ * Раньше кнопки пополнения ошибочно вели на /crash.
+ * Теперь они ведут на отдельный маршрут пополнения.
+ * Если на сервере уже есть /deposit, он откроется с выбранным методом.
+ */
+function depositMethod(method){
+    closeDeposit();
+
+    var url = '/deposit?method=' + encodeURIComponent(method);
+
+    try{
+        if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback){
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
+    }catch(e){}
+
+    window.location.href = url;
+}
+
+function setAvatar(auth,user){
+    var img = $('avatarImg');
+    if(!img) return;
+
+    var photo =
+        (auth && (auth.photo_url || auth.photoUrl)) ||
+        (user && (user.photo_url || user.photoUrl));
+
+    if(photo){
+        img.src = photo;
+
+        img.onerror = function(){
+            this.onerror = null;
+            this.src = '/static/img/logo.png';
+        };
+    }
+}
+
+async function loadTopBar(){
+    if(!userId) return;
+
+    try{
+        var r = await fetch('/api/user/' + userId);
+        var d = await r.json();
+
+        if(d.success && d.user){
+            userData = d.user;
+
+            /*
+             * Оставляем совместимость с текущим API:
+             * balance_stars хранится в сотых долях Stars.
+             */
+            var balanceStars = Number(d.user.balance_stars || 0);
+
+            if($('balVal')){
+                $('balVal').textContent = (balanceStars / 100).toFixed(2);
+            }
+
+            setAvatar(null,d.user);
+        }
+    }catch(e){}
+}
+
+async function loadHalloweenEvent(){
+    var card=$('witchHatEvent');
+    if(!card) return;
+    try{
+        var r=await fetch('/api/events/witch-hat-party?ts='+Date.now(),{cache:'no-store'});
+        var d=await r.json();
+        var e=d.event||{};
+        var crashCard=document.querySelector('.game-card.crash');
+        var active=!!e.active;
+        card.classList.toggle('is-hidden',!active);
+        if(active){
+            document.documentElement.classList.add('halloween-active');
+            if(crashCard) crashCard.classList.add('witch-mode');
+            var left=Math.max(0,Number(e.remaining_seconds||0));
+            function render(){
+                var total=Math.max(0,Math.floor(left));
+                var days=Math.floor(total/86400);
+                var hours=Math.floor((total%86400)/3600);
+                var mins=Math.floor((total%3600)/60);
+                var sec=total%60;
+                var text=(days?days+'д ':'')+String(hours).padStart(2,'0')+':'+String(mins).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+                var el=$('witchHatTimer');
+                if(el) el.textContent=left>0?'Осталось '+text:'Ивент активен';
+            }
+            clearInterval(window._eventTimer);
+            render();
+            window._eventTimer=setInterval(function(){
+                left=Math.max(0,left-1);
+                render();
+                // Never hide the card locally: the server is the source of truth.
+                // Re-read only when a finite timer expires.
+                if(left<=0){
+                    clearInterval(window._eventTimer);
+                    setTimeout(loadHalloweenEvent,1000);
+                }
+            },1000);
+        }else{
+            clearInterval(window._eventTimer);
+            if(crashCard) crashCard.classList.remove('witch-mode');
+            document.documentElement.classList.remove('halloween-active');
+        }
+    }catch(e){
+        // A transient network error must not make an already visible event blink.
+        // Keep the current state and retry quietly.
+        setTimeout(loadHalloweenEvent,3000);
+    }
+}
+
+async function initGames(){
+    var auth = null;
+
+    try{
+        auth = await telegramAuth();
+    }catch(e){}
+
+    if(auth && auth.id){
+        userId = auth.id;
+
+        try{
+            var br = await fetch('/api/check-ban?user_id=' + auth.id);
+            var bd = await br.json();
+
+            if(bd && bd.banned){
+                window.location.href = '/ban';
+                return;
+            }
+        }catch(e){}
+
+        setAvatar(auth,null);
+
+        try{
+            if(window.Telegram && Telegram.WebApp){
+                Telegram.WebApp.ready();
+                Telegram.WebApp.expand();
+                try{ if(typeof Telegram.WebApp.requestFullscreen === 'function'){ Telegram.WebApp.requestFullscreen(); } }catch(e){}
+                document.documentElement.style.setProperty('--tg-safe-top', (Telegram.WebApp.safeAreaInsetTop || 0) + 'px');
+                Telegram.WebApp.setHeaderColor('#0b111c');
+                Telegram.WebApp.setBackgroundColor('#0b111c');
+            }
+        }catch(e){}
+    }
+
+    loadTopBar();
+    loadHalloweenEvent();
+}
+
+document.addEventListener('DOMContentLoaded',initGames);
+</script>
+
+</body>
+</html>

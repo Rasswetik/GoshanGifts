@@ -8,3 +8,8 @@ pytz==2024.2
 Pillow==10.4.0
 aportalsmp==1.3
 gunicorn==22.0.0
+
+# Опционально: нужен только если рядом лежит db_wrapper.py с поддержкой
+# PostgreSQL (переменная окружения DATABASE_URL). Если её нет, приложение
+# сам переключится на встроенный sqlite3, и psycopg2-binary можно не ставить.
+# psycopg2-binary==2.9.9

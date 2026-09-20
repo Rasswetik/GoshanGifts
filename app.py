@@ -42,8 +42,9 @@ except Exception:
     def _pg_get_connection():
         raise RuntimeError('PostgreSQL is unavailable in local SQLite mode')
 
-# Загружаем переменные окружени
-load_dotenv()
+# Загружаем переменные окружения из .env, лежащего рядом с этим файлом
+# (независимо от того, из какой рабочей директории запущен процесс)
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -82,7 +83,7 @@ def _set_cached_balance(user_id, balance):
 
 # Создаем приложение Flask
 app = Flask(__name__)
-app.secret_key = 'rsw_FsL1QH7R8yIqB6_nGVoFNk15zfwy2LSU4lNcGs7FMHE'
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'rsw_FsL1QH7R8yIqB6_nGVoFNk15zfwy2LSU4lNcGs7FMHE')
 
 # Конфигурация
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -93,7 +94,7 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 # а не в папку рядом с кодом, которая стирается при каждом деплое.
 PERSISTENT_DATA_DIR = os.environ.get('DB_DIR', os.path.join(BASE_PATH, 'data'))
 os.makedirs(PERSISTENT_DATA_DIR, exist_ok=True)
-ADMIN_ID = 5257227756
+ADMIN_ID = int(os.getenv('ADMIN_ID', '5257227756'))
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '').strip()
 WEBSITE_URL = os.getenv('WEBSITE_URL', 'https://rasswetgifts.onrender.com').strip().rstrip('/')
 TG_API = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}'
